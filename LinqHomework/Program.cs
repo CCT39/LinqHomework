@@ -77,11 +77,11 @@ namespace LinqHomework
             Console.WriteLine($"{Environment.NewLine}Q: 將所有影片用片長排序(最長的在前)，並顯示排序過的排名以及片名");
             // ===================<Q5作答區>===================
 
-            var a5 = videoList.OrderBy(x => x.Duration);
-            int index5 = 0;
+            var a5 = videoList.OrderByDescending(x => x.Duration);
+            int index5 = 1;
             foreach (var item in a5)
             {
-                Console.WriteLine($"No. {index5}：\t {item.Name}");
+                Console.WriteLine($"No. {index5:D2}： {item.Name}");
                 index5++;
             }
 
