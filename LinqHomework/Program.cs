@@ -163,12 +163,8 @@ namespace LinqHomework
             var allVideos = videoList.GroupBy(x => x.Type);
             foreach (var group in allVideos)
             {
-                double a9 = 0;
-                
-                Console.Write($"{group.Key}：總時長 ");
-                foreach (var item in group)
-                    a9 += item.Duration;
-                Console.WriteLine($"{a9:N1} 分鐘");
+                double a9 = group.Sum(x => x.Duration);
+                Console.WriteLine($"{group.Key}：總時長 {a9:N1} 分鐘");
             }
 
             // ===================</Q9作答區>===================
