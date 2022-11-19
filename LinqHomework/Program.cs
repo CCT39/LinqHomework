@@ -39,18 +39,14 @@ namespace LinqHomework
             Console.WriteLine($"{Environment.NewLine}Q: 找出所有日本的影片名稱");
             // ===================<Q1作答區>===================
 
-            var a1 = videoList.Where(x => x.Country == "日本");
-            foreach (var item in a1)
-                Console.WriteLine(item.Name);
+            videoList.Where(x => x.Country == "日本").ToList().ForEach(x => Console.WriteLine(x.Name));
 
             // ===================</Q1作答區>===================
             // 2. 找出所有歐美的影片且類型為"影集"的影片名稱
             Console.WriteLine($"{Environment.NewLine}Q: 找出所有歐美的影片且類型為'影集'的影片名稱");
             // ===================<Q2作答區>===================
 
-            var a2 = videoList.Where(x => x.Country == "歐美").Where(x => x.Type == "影集");
-            foreach (var item in a2)
-                Console.WriteLine(item.Name);
+            videoList.Where(x => x.Country == "歐美").Where(x => x.Type == "影集").ToList().ForEach(x => Console.WriteLine(x.Name));
 
             // ===================</Q2作答區>===================
             // 3. 是否有影片片長超過120分鐘的影片
@@ -69,21 +65,15 @@ namespace LinqHomework
             Console.WriteLine($"{Environment.NewLine}Q: 請列出所有人的名稱，並且用大寫英文表示");
             // ===================<Q4作答區>===================
 
-            foreach (var a4 in personList)
-                Console.WriteLine(a4.Name.ToUpper());
+            personList.ForEach(x => Console.WriteLine(x.Name.ToUpper()));
 
             // ===================</Q4作答區>===================
             // 5. 將所有影片用片長排序(最長的在前)，並顯示排序過的排名以及片名，ex: No1: 天竺鼠車車
             Console.WriteLine($"{Environment.NewLine}Q: 將所有影片用片長排序(最長的在前)，並顯示排序過的排名以及片名");
             // ===================<Q5作答區>===================
 
-            var a5 = videoList.OrderByDescending(x => x.Duration);
-            int index5 = 1;
-            foreach (var item in a5)
-            {
-                Console.WriteLine($"No. {index5:D2}： {item.Name}");
-                index5++;
-            }
+            var a5 = videoList.OrderByDescending(x => x.Duration).ToList();
+            a5.ForEach(x => Console.WriteLine($"No. {a5.FindIndex(y => y == x) + 1:D2}： {x.Name}"));
 
             // ===================</Q5作答區>===================
             // 6. 將所有影片進行以"類型"分類，並顯示以下樣式(注意縮排)
@@ -99,8 +89,7 @@ namespace LinqHomework
             foreach (var items in a6)
             {
                 Console.WriteLine($"{items.Key}：");
-                foreach (var item in items)
-                    Console.WriteLine($"\t{item.Name}");
+                items.ToList().ForEach(y => Console.WriteLine($"\t{y.Name}"));
             }
 
             // ===================</Q6作答區>===================
@@ -126,6 +115,7 @@ namespace LinqHomework
                 // 國家 && 類型
                 IEnumerable<Video> favos8 = new List<Video>();
                 IEnumerable<string> personalFavos = new List<string>();
+                //person.CountryPrefer.ForEach(x => videoList.ForEach(y => Console.WriteLine(string.Join("、", x.Intersect(y.Country).Select(z => y.Name).Distinct()))));
 
                 foreach (var country in person.CountryPrefer)
                 {
@@ -160,21 +150,14 @@ namespace LinqHomework
             Console.WriteLine($"{Environment.NewLine}Q: 列出所有類型的影片總時長");
             // ===================<Q9作答區>===================
 
-            var allVideos = videoList.GroupBy(x => x.Type);
-            foreach (var group in allVideos)
-            {
-                double a9 = group.Sum(x => x.Duration);
-                Console.WriteLine($"{group.Key}：總時長 {a9:N1} 分鐘");
-            }
+            videoList.GroupBy(x => x.Type).ToList().ForEach(x => Console.WriteLine($"{x.Key}：總時長 {x.Sum(y => y.Duration):N1} 分鐘"));
 
             // ===================</Q9作答區>===================
             // 10. 列出所有國家出產的影片數量，ex: 日本: 3部
             Console.WriteLine($"{Environment.NewLine}Q: 列出所有國家出產的影片數量");
             // ===================<Q10作答區>===================
 
-            var a10 = videoList.GroupBy(x => x.Country);
-            foreach (var group in a10)           
-                Console.WriteLine($"{group.Key}：總共有 {group.Count()} 部影片");
+            videoList.GroupBy(x => x.Country).ToList().ForEach(x => Console.WriteLine($"{x.Key}：總共有 {x.Count()} 部影片"));
 
             // ===================</Q10作答區>===================
             Console.ReadLine();
