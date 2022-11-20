@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LinqHomework
+namespace LinqHomework_ans
 {
     /// <summary>
     /// 人
