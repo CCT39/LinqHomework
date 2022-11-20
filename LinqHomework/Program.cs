@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -109,40 +110,16 @@ namespace LinqHomework
             Console.WriteLine($"{Environment.NewLine}Q: 找到每個人喜歡的影片");
             // ===================<Q8作答區>===================
 
-            Console.WriteLine("\t***** 如果題目指的喜歡是指國家 && 類型 *****");
             foreach (var person in personList)
             {
-                // 國家 && 類型
-                IEnumerable<Video> favos8 = new List<Video>();
-                IEnumerable<string> personalFavos = new List<string>();
-                //person.CountryPrefer.ForEach(x => videoList.ForEach(y => Console.WriteLine(string.Join("、", x.Intersect(y.Country).Select(z => y.Name).Distinct()))));
+                List<string> countryFavos = new List<string>();
+                List<string> typeFavos = new List<string>();
 
-                foreach (var country in person.CountryPrefer)
-                {
-                    foreach (var type in person.TypePrefer)
-                    {
-                        favos8 = favos8.Union(videoList.Where(x => x.Country == country && x.Type == type));
-                        personalFavos = favos8.Select(x => x.Name);
-                    }
-                }
+                videoList.ForEach(x => countryFavos.AddRange(person.CountryPrefer.Where(y => x.Country == y).Select(z => x.Name)));
+                videoList.ForEach(x => typeFavos.AddRange(person.TypePrefer.Where(y => x.Type == y).Select(z => x.Name)));
 
-                var ans8 = string.Join("、", personalFavos.Distinct());
-
-                Console.WriteLine($"{person.Name} 喜歡的影片有：{ans8}。");
-            }
-
-            Console.WriteLine("\t***** 如果題目指的喜歡是指國家 || 類型 *****");
-            foreach (var person in personList)
-            { 
-                // 國家 || 類型
-                var favo8 = person.CountryPrefer.Union(person.TypePrefer);
-                IEnumerable<Video> personalFavo = new List<Video>();
-                foreach (var item in favo8)
-                    personalFavo = personalFavo.Union(videoList.Where(x => x.Country.Contains(item)).Union(videoList.Where(x => x.Type.Contains(item))));
-                
-                var a8 = string.Join("、", personalFavo.Select(x => x.Name));
-
-                Console.WriteLine($"{person.Name} 喜歡的影片有：{a8}。");
+                Console.WriteLine($"{person.Name} 喜歡的影片有（如果是指國家 && 類型）：{string.Join("、", countryFavos.Intersect(typeFavos))}。");
+                Console.WriteLine($"{person.Name} 喜歡的影片有（如果是指國家 || 類型）：{string.Join("、", countryFavos.Union(typeFavos))}。");
             }
 
             // ===================</Q8作答區>===================
