@@ -47,7 +47,7 @@ namespace LinqHomework_ans
             Console.WriteLine($"{Environment.NewLine}Q: 找出所有歐美的影片且類型為'影集'的影片名稱");
             // ===================<Q2作答區>===================
 
-            videoList.Where(x => x.Country == "歐美").Where(x => x.Type == "影集").ToList().ForEach(x => Console.WriteLine(x.Name));
+            videoList.Where(x => x.Country == "歐美" && x.Type == "影集").ToList().ForEach(x => Console.WriteLine(x.Name));
 
             // ===================</Q2作答區>===================
             // 3. 是否有影片片長超過120分鐘的影片
@@ -85,13 +85,18 @@ namespace LinqHomework_ans
             */
             Console.WriteLine($"{Environment.NewLine}Q: 將所有影片進行以'類型'分類");
             // ===================<Q6作答區>===================
-
+            
+            /*
             var a6 = videoList.GroupBy(x => x.Type);
             foreach (var items in a6)
             {
                 Console.WriteLine($"{items.Key}：");
                 items.ToList().ForEach(y => Console.WriteLine($"\t{y.Name}"));
-            }
+            }*/
+
+            var a6 = videoList.GroupBy(x => x.Type)
+                .Select(x => $"{x.Key}：{Environment.NewLine}{string.Join(Environment.NewLine, x.Select(y => "\t" + y.Name))}");
+            Console.WriteLine(string.Join(Environment.NewLine, a6));
 
             // ===================</Q6作答區>===================
             // 7. 找到第一個喜歡歐美影片的人
@@ -105,11 +110,18 @@ namespace LinqHomework_ans
             else
                 Console.WriteLine($"找不到喜歡 {target7} 影片的人。");
 
+            //var a7 = personList.FirstOrDefault(p => p.CountryPrefer.Contains("歐美"))?.Name ?? "沒有人";
+
             // ===================</Q7作答區>===================
             // 8. 找到每個人喜歡的影片(根據國家以及類型)，ex: Bill: 天竺鼠車車, 倚天屠龍記2019
             Console.WriteLine($"{Environment.NewLine}Q: 找到每個人喜歡的影片");
             // ===================<Q8作答區>===================
 
+            // &&
+            var p8 = personList.Select(x => $"{x.Name}：{string.Join("、", videoList.Where(y => x.CountryPrefer.Contains(y.Country) && x.TypePrefer.Contains(y.Type)).Select(z => z.Name))}");
+            Console.WriteLine(string.Join(Environment.NewLine, p8));
+            
+            /*
             foreach (var person in personList)
             {
                 List<string> countryFavos = new List<string>();
@@ -120,7 +132,7 @@ namespace LinqHomework_ans
 
                 Console.WriteLine($"{person.Name} 喜歡的影片有（如果是指國家 && 類型）：{string.Join("、", countryFavos.Intersect(typeFavos))}。");
                 Console.WriteLine($"{person.Name} 喜歡的影片有（如果是指國家 || 類型）：{string.Join("、", countryFavos.Union(typeFavos))}。");
-            }
+            }*/
 
             // ===================</Q8作答區>===================
             // 9. 列出所有類型的影片總時長，ex: 動漫: 100min
@@ -129,12 +141,18 @@ namespace LinqHomework_ans
 
             videoList.GroupBy(x => x.Type).ToList().ForEach(x => Console.WriteLine($"{x.Key}：總時長 {x.Sum(y => y.Duration):N1} 分鐘"));
 
+            // var a9 = videoList.GroupBy(x => x.Type).Select(x => $"{x.Key}：{y.Sum(x => x.Duration)} 分鐘");
+            // Console.WriteLine(string.Join(Environment.NewLine, a9));
+
             // ===================</Q9作答區>===================
             // 10. 列出所有國家出產的影片數量，ex: 日本: 3部
             Console.WriteLine($"{Environment.NewLine}Q: 列出所有國家出產的影片數量");
             // ===================<Q10作答區>===================
 
             videoList.GroupBy(x => x.Country).ToList().ForEach(x => Console.WriteLine($"{x.Key}：總共有 {x.Count()} 部影片"));
+
+            // var a10 = videoList.GroupBy(x => x.Type).Select(x => $"{x.Key}：{y.Count()}");
+            // Console.WriteLine(string.Join(Environment.NewLine, a10));
 
             // ===================</Q10作答區>===================
             Console.ReadLine();
